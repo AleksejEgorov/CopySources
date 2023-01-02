@@ -21,10 +21,11 @@ else {
 
 $Form = [System.Windows.Forms.Form]::new()
 $Form.TopMost = $true
-[System.Windows.Forms.MessageBox]::Show(
+
+[void]([System.Windows.Forms.MessageBox]::Show(
     $Form,
     $Message,
     'Copy sources',
     'OK',
     'Info'
-)
+))
