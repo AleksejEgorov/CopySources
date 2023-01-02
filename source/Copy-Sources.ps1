@@ -17,6 +17,7 @@ param (
 
 
 begin {
+    Import-Module -Name Storage -Verbose:$false
     Write-Verbose "Invokation start"
     #region Form creation
         [void]([System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic'))
@@ -36,12 +37,9 @@ begin {
         $Label = [System.Windows.Forms.Label]::new()
         $Label.Location = [System.Drawing.Point]::new(10,20)
         $Label.Size = [System.Drawing.Size]::new(440,20)
+        
         $Label.Text = 'Execution started'
         $Form.Controls.Add($Label)
-
-        $Icon = [system.drawing.icon]::ExtractAssociatedIcon(([System.IO.Path]::Combine($PSScriptRoot,'res','Camera.ico')))
-        $Form.Icon = $Icon
-
 
         $ProgressBar = [System.Windows.Forms.ProgressBar]::new()
         $ProgressBar.Location = [System.Drawing.Size]::new(10,80)
@@ -51,15 +49,31 @@ begin {
         $Form.Controls.Add($ProgressBar)
 
         $Form.Add_Shown({$Form.Activate()})
-        $Form.Show()
     #endregion
+
+    if ((Get-ChildItem $PSScriptRoot).Name -contains 'Readme.md') {
+        $ProjectRoot = $PSScriptRoot
+    }
+    elseif ((Get-Item $PSScriptRoot).Name -eq 'source') {
+        $ProjectRoot = Split-Path $PSScriptRoot -Parent
+    }
+
+    $IconFilePath = [System.IO.Path]::Combine($ProjectRoot,'res','Camera.ico')
+    Write-Verbose "Icon $IconFilePath"
+
+    $Icon = [system.drawing.icon]::ExtractAssociatedIcon($IconFilePath)
+    $Form.Icon = $Icon
+
+    $Form.Show()
+
+
 
     # Import config
     try {
         if (!$ConfJsonPath) {
             $ConfJsonPath = [System.IO.Path]::Combine($HOME,'CopySourcesConf.json')
             if (!(Test-Path $ConfJsonPath)) {
-                Copy-Item ([System.IO.Path]::Combine($PSScriptRoot,'configs','ConfSample.json')) $ConfJsonPath
+                Copy-Item ([System.IO.Path]::Combine($ProjectRoot,'configs','ConfSample.json')) $ConfJsonPath
             }
         }
         $Conf = Get-Content -Path $ConfJsonPath -Raw | ConvertFrom-Json
@@ -79,13 +93,13 @@ begin {
     $Label.Text = "Config path: $ConfJsonPath"
 
     #Test exif tool exists
-    $ExifTool = [System.IO.Path]::Combine($PSScriptRoot,'bin','exiftool.exe')
+    $ExifTool = [System.IO.Path]::Combine($ProjectRoot,'bin','exiftool.exe')
 
     if (!(Test-Path $ExifTool)) {
         $ExifToolArchive = [System.IO.Path]::Combine($env:TEMP,'exiftool.zip')
         Invoke-WebRequest -Uri $Conf.$ExifToolUrl -OutFile $ExifToolArchive
-        Expand-Archive -Path $ExifToolArchive -DestinationPath $PSScriptRoot -Force
-        Rename-Item -Path ([System.IO.Path]::Combine($PSScriptRoot,'exiftool(-k).exe')) -NewName 'exiftool.exe'
+        Expand-Archive -Path $ExifToolArchive -DestinationPath $ProjectRoot -Force
+        Rename-Item -Path ([System.IO.Path]::Combine($ProjectRoot,'exiftool(-k).exe')) -NewName 'exiftool.exe'
         Remove-Item $ExifToolArchive
         try {
             [void](Get-Item -Path $ExifTool)
@@ -161,13 +175,13 @@ process {
 
     switch ($ResultVolumes.Count) {
         0 {
-            [System.Windows.Forms.MessageBox]::Show(
+            [void]([System.Windows.Forms.MessageBox]::Show(
                 $Form,
                 "No source drive found.",
                 'Copy sources',
                 'OK',
                 'Error'
-            )
+            ))
             $Form.Close()
             $Form.Dispose()
             exit 2
@@ -177,13 +191,13 @@ process {
             Write-Verbose "Sorce root is $SourceRoot"
         }
         Default {
-            [System.Windows.Forms.MessageBox]::Show(
+            [void]([System.Windows.Forms.MessageBox]::Show(
                 $Form,
                 "Multiple drives matched all conditions found.`nRemove drives or change config file",
                 'Copy sources',
                 'OK',
                 'Warning'
-            )
+            ))
             # TODO: @AleksejEgorov Add volume selection for this case.
             $Form.Close()
             $Form.Dispose()
@@ -312,13 +326,13 @@ end {
     }
     Write-Verbose $Message
 
-    [System.Windows.Forms.MessageBox]::Show(
+    [void]([System.Windows.Forms.MessageBox]::Show(
         $Form,
         $Message,
         'Copy sources',
         'ok',
         'Information'
-    )
+    ))
     $Form.Close()
     $Form.Dispose()
 
