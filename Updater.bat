@@ -1,5 +1,5 @@
 @echo off
 cls
 cd %~dp0
-git pull
+powershell -ExecutionPolicy ByPass -File .\sources\Updater.ps1
 pause

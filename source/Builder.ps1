@@ -31,6 +31,6 @@ $NewVersion = [version]::new($Major,$Minor,$Build,$Revision)
 Write-Host -ForegroundColor Yellow "New version is $NewVersion"
 
 Remove-Item .\Copy-Sources.exe
-Remove-Item .\Updater.exe
+# Remove-Item .\Updater.exe
 ps2exe -inputFile .\source\Copy-Sources.ps1 -outputFile .\Copy-Sources.exe -iconFile .\res\Camera.ico -version $NewVersion.ToString() -STA -noConsole -noVisualStyles
-ps2exe -inputFile .\source\Updater.ps1 -outputFile .\Updater.exe -iconFile .\res\Updater.ico -version $NewVersion.ToString() -STA -noVisualStyles
+# ps2exe -inputFile .\source\Updater.ps1 -outputFile .\Updater.exe -iconFile .\res\Updater.ico -version $NewVersion.ToString() -STA -noVisualStyles

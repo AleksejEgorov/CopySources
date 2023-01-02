@@ -231,6 +231,7 @@ process {
             continue
         }
 
+
         Write-Verbose "Processing $($Photo.Name)."
         $PhotoBaseName = $Photo.Name.Split('.',' ','-','_','(')[0]
         Write-Verbose "Base name is $PhotoBaseName."
@@ -249,6 +250,29 @@ process {
         }
 
         $DateTaken = [datetime]::ParseExact($Exif.DateTimeOriginal,'yyyy:MM:dd HH:mm:ss',$null)
+
+
+        # Discover raw files.
+        $PhotoRaw = @()
+        $SourceContent | `
+        Where-Object {
+            ($PSItem.Extension -in $RawExtensions) -and
+            ($PSItem.Name -like "$PhotoBaseName*")
+        } | ForEach-Object {
+            if ((& $ExifTool -lang en -csv $PSItem.FullName | ConvertFrom-Csv).Model -eq $Exif.Model) {
+                $PhotoRaw += $PSItem
+                Write-Verbose "Raw $($PSItem.FullName) found."
+            }
+            else {
+                Write-Verbose "Skip $($PSItem.FullName). It was not taken with $($Exif.Model)."
+                continue
+            }
+        }
+
+        if (!$PhotoRaw) {
+            Write-Warning 'Raw for $PhotoBaseName not found'
+            continue
+        }
 
         Write-Verbose "Taken on $DateTaken."
         $Year = [string]$DateTaken.Year
@@ -293,21 +317,12 @@ process {
             Write-Verbose "Moving $($PSItem.FullName)."
         }
 
-        # Moving raw files.
-        $SourceContent | `
-        Where-Object {
-            ($PSItem.Extension -in $RawExtensions) -and
-            ($PSItem.Name -like "$PhotoBaseName*")
-        } | ForEach-Object {
-            if ((& $ExifTool -lang en -csv $PSItem.FullName | ConvertFrom-Csv).Model -eq $Exif.Model) {
-                Copy-Item -Path $PSItem.FullName -Destination $ArchiveFolderRaw -Force
-                Write-Verbose "Copying $($PSItem.FullName)."
-            }
-            else {
-                Write-Verbose "Skip $($PSItem.FullName). It was not taken with $($Exif.Model)."
-                continue
-            }
+        # Copying raw
+        $PhotoRaw | ForEach-Object {
+            Copy-Item -Path $PSItem.FullName -Destination $ArchiveFolderRaw -Force
+            Write-Verbose "Copying raw $($PSItem.FullName)"
         }
+
 
         $Counter++
         Write-Verbose "$Counter photos done."
