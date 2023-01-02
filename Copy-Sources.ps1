@@ -57,7 +57,10 @@ begin {
     # Import config
     try {
         if (!$ConfJsonPath) {
-            $ConfJsonPath = [System.IO.Path]::Combine($PSScriptRoot,'Config.json')
+            $ConfJsonPath = [System.IO.Path]::Combine($HOME,'CopySourcesConf.json')
+            if (!(Test-Path $ConfJsonPath)) {
+                Copy-Item ([System.IO.Path]::Combine($PSScriptRoot,'ConfSample.json')) $ConfJsonPath
+            }
         }
         $Conf = Get-Content -Path $ConfJsonPath -Raw | ConvertFrom-Json
     }
