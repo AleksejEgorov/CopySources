@@ -1,0 +1,17 @@
+{
+    "ExifToolUrl": "https://exiftool.org/exiftool-12.52.zip",
+    "ProdFolder": "L:\\Pict\\PENTAX\\Ready for production",
+    "Cameras": [
+        {
+            "Model": "PENTAX K-1",
+            "ArchFolder": "L:\\Pict\\PENTAX",
+            "RawExtensions": [".DNG",".PEF",".xmp"],
+            "SDMarks": {
+                "DriveTypes": ["Removable"],
+                "Labels": ["K-1"],
+                "FSItems": ["DCIM"]
+            }
+        }
+    ],
+    "ProcessedExtensions": [".jpg",".jpeg",".psd",".xmp",".tiff",".png"]
+}
