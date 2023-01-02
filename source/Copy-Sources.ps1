@@ -37,7 +37,7 @@ begin {
         $Label = [System.Windows.Forms.Label]::new()
         $Label.Location = [System.Drawing.Point]::new(10,20)
         $Label.Size = [System.Drawing.Size]::new(440,20)
-        
+
         $Label.Text = 'Execution started'
         $Form.Controls.Add($Label)
 
@@ -146,7 +146,7 @@ process {
 
         # Step 2: Volume labels
         if ($Camera.SDMarks.Labels) {
-            $CamVolumes = @($CamVolumes | Where-Object {$PSItem.FriendlyName -in $Camera.SDMarks.Labels})
+            $CamVolumes = @($CamVolumes | Where-Object {$PSItem.FileSystemLabel -in $Camera.SDMarks.Labels})
         }
         Write-Verbose "Step 2: $($CamVolumes.Count)"
 
