@@ -15,6 +15,8 @@ else {
     Expand-Archive -Path $ArchFile -DestinationPath $env:TEMP -Force
     Copy-Item -Path [System.IO.Path]::Combine($env:TEMP,'CopySources-master','*') -Destination $PSScriptRoot -Recurse -Force
     $Message = "Updated from downloaded zip file"
+    Remove-Item ([System.IO.Path]::Combine($env:TEMP,'CopySources-master')) -Recurse -Force
+    Remove-Item $ArchFile -Force
 }
 
 $Form = [System.Windows.Forms.Form]::new()
