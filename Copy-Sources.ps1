@@ -93,11 +93,18 @@ begin {
         catch {
             # https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.interaction.msgbox?view=net-7.0
             # Window style = OKOnly + Critical + DefaultButton1 + SystemModal + MsgBoxSetForeground
-            [void]([Microsoft.VisualBasic.Interaction]::MsgBox(
+            # [void]([Microsoft.VisualBasic.Interaction]::MsgBox(
+            #     "Cannot load exiftool.exe. $($Error[0].Exception.Message)",
+            #     (0 + 16 + 0 + 4096 + 65536),
+            #     'Copy Sources'
+            # ))
+            [System.Windows.Forms.MessageBox]::Show(
+                $Form,
                 "Cannot load exiftool.exe. $($Error[0].Exception.Message)",
-                (0 + 16 + 0 + 4096 + 65536),
-                'Copy Sources'
-            ))
+                'Copy sources',
+                'OK',
+                'Error'
+            )
             exit 1
         }
     }
