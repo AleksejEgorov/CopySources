@@ -39,7 +39,7 @@ begin {
         $Label.Text = 'Execution started'
         $Form.Controls.Add($Label)
 
-        $Icon = [system.drawing.icon]::ExtractAssociatedIcon(([System.IO.Path]::Combine($PSScriptRoot,'Camera.ico')))
+        $Icon = [system.drawing.icon]::ExtractAssociatedIcon(([System.IO.Path]::Combine($PSScriptRoot,'res','Camera.ico')))
         $Form.Icon = $Icon
 
 
@@ -59,7 +59,7 @@ begin {
         if (!$ConfJsonPath) {
             $ConfJsonPath = [System.IO.Path]::Combine($HOME,'CopySourcesConf.json')
             if (!(Test-Path $ConfJsonPath)) {
-                Copy-Item ([System.IO.Path]::Combine($PSScriptRoot,'ConfSample.json')) $ConfJsonPath
+                Copy-Item ([System.IO.Path]::Combine($PSScriptRoot,'configs','ConfSample.json')) $ConfJsonPath
             }
         }
         $Conf = Get-Content -Path $ConfJsonPath -Raw | ConvertFrom-Json
@@ -79,7 +79,7 @@ begin {
     $Label.Text = "Config path: $ConfJsonPath"
 
     #Test exif tool exists
-    $ExifTool = [System.IO.Path]::Combine($PSScriptRoot,'exiftool.exe')
+    $ExifTool = [System.IO.Path]::Combine($PSScriptRoot,'bin','exiftool.exe')
 
     if (!(Test-Path $ExifTool)) {
         $ExifToolArchive = [System.IO.Path]::Combine($env:TEMP,'exiftool.zip')
