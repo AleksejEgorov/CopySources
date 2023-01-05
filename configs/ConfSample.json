@@ -1,14 +1,14 @@
 {
     "ExifToolUrl": "https://exiftool.org/exiftool-12.52.zip",
-    "ProdFolder": "D:\\TestOper",
+    "ProdFolder": "C:\\TesProd",
     "Cameras": [
         {
-            "Model": "PENTAX K-5",
-            "ArchFolder": "D:\\TestArch",
+            "Model": "PENTAX K-1",
+            "ArchFolder": "C:\\TestArch",
             "RawExtensions": [".DNG",".PEF",".xmp"],
             "SDMarks": {
                 "DriveTypes": ["Removable"],
-                "Labels": [],
+                "Labels": ["MyLabel"],
                 "FSItems": ["DCIM"]
             }
         }

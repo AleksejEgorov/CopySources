@@ -74,6 +74,14 @@ begin {
             $ConfJsonPath = [System.IO.Path]::Combine($HOME,'CopySourcesConf.json')
             if (!(Test-Path $ConfJsonPath)) {
                 Copy-Item ([System.IO.Path]::Combine($ProjectRoot,'configs','ConfSample.json')) $ConfJsonPath
+                [void]([System.Windows.Forms.MessageBox]::Show(
+                    $Form,
+                    "Config was copied from sample to $ConfJsonPath`nChange it with your values and run again.",
+                    'Copy sources',
+                    'OK',
+                    'Warning'
+                ))
+                exit 1
             }
         }
         $Conf = Get-Content -Path $ConfJsonPath -Raw | ConvertFrom-Json
@@ -105,13 +113,6 @@ begin {
             [void](Get-Item -Path $ExifTool)
         }
         catch {
-            # https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.interaction.msgbox?view=net-7.0
-            # Window style = OKOnly + Critical + DefaultButton1 + SystemModal + MsgBoxSetForeground
-            # [void]([Microsoft.VisualBasic.Interaction]::MsgBox(
-            #     "Cannot load exiftool.exe. $($Error[0].Exception.Message)",
-            #     (0 + 16 + 0 + 4096 + 65536),
-            #     'Copy Sources'
-            # ))
             [System.Windows.Forms.MessageBox]::Show(
                 $Form,
                 "Cannot load exiftool.exe. $($Error[0].Exception.Message)",
