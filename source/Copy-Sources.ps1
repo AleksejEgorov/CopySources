@@ -271,7 +271,7 @@ process {
         }
 
         if (!$PhotoRaw) {
-            Write-Warning 'Raw for $PhotoBaseName not found'
+            Write-Warning "Raw for $PhotoBaseName not found"
             continue
         }
 

@@ -10,23 +10,14 @@ Write-Host -ForegroundColor Yellow "Current version is $Version"
 
 $NewVersion = [version]::new()
 if ($Major) {
-    $Major = $Version.Major + 1
-    $Minor = 0
-    $Build = 0
+    $NewVersion = [version]::new($Version.Major + 1,0,0,$Version.Revision + 1)
 }
 elseif ($Minor) {
-    $Major = $Version.Major
-    $Minor = $Version.Minor + 1
-    $Build = 0
+    $NewVersion = [version]::new($Version.Major,$Version.Minor + 1,0,$Version.Revision + 1)
 }
 else {
-    $Major = $Version.Major
-    $Minor = $Version.Minor
-    $Build = $Version.Build + 1
+    $NewVersion = [version]::new($Version.Major,$Version.Minor,$Version.Build + 1,$Version.Revision + 1)
 }
-$Revision = $Version.Revision + 1
-
-$NewVersion = [version]::new($Major,$Minor,$Build,$Revision)
 
 Write-Host -ForegroundColor Yellow "New version is $NewVersion"
 
