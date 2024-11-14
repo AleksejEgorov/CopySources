@@ -171,7 +171,7 @@ process {
         }
         Write-Verbose "Step 3: $($CamVolumes.Count)"
 
-        $ResultVolumes += $CamVolumes
+        $ResultVolumes += $CamVolumes | Get-Unique
     }
 
     switch ($ResultVolumes.Count) {
