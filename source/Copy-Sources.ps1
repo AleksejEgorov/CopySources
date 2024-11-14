@@ -171,7 +171,11 @@ process {
         }
         Write-Verbose "Step 3: $($CamVolumes.Count)"
 
-        $ResultVolumes += $CamVolumes | Get-Unique
+        foreach ($CamVolume in $CamVolumes) {
+            if ($ResultVolumes.UniqueId -notcontains $CamVolume.UniqueId) {
+                $ResultVolumes += $CamVolume
+            }
+        }
     }
 
     switch ($ResultVolumes.Count) {
