@@ -11,6 +11,16 @@
                 "Labels": ["MyLabel"],
                 "FSItems": ["DCIM"]
             }
+        },
+        {
+            "Model": "X-Pro3",
+            "ArchFolder": "C:\\OtherArch",
+            "RawExtensions": [".RAF",".xmp"],
+            "SDMarks": {
+                "DriveTypes": ["Removable"],
+                "Labels": [""],
+                "FSItems": ["DCIM"]
+            }
         }
     ],
     "ProcessedExtensions": [".jpg",".jpeg",".psd",".xmp",".tiff",".png"]
