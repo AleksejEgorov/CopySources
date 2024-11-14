@@ -225,6 +225,7 @@ process {
         $ProgressCounter++
         $Label.Text = $Photo.Name
         $ProgressBar.Value = $ProgressCounter
+        $Form.Update()
 
 
         if (!(Test-Path $Photo.FullName)) {
