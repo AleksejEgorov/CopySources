@@ -160,7 +160,7 @@ process {
                 foreach ($TestItemName in $Camera.SDMarks.FSItems) {
                     if (
                         ((Get-ChildItem (Get-PSDrive $Volume.DriveLetter).Root).Name -contains $TestItemName) -and
-                        ($FoundVolumes -xor ($FoundVolumes.UniqueId -notcontains $Volume.UniqueId))
+                        ($FoundVolumes.UniqueId -notcontains $Volume.UniqueId)
                     ) {
                         $FoundVolumes += $Volume
                     }
